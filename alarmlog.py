@@ -16,39 +16,41 @@ class Hora:
 
 
 def disarm(line):
-    is_hs = is_date = is_alarm = is_estado = True
+    is_hs = is_date = is_alarm = True
+    is_cat = False
     cad = []
-    fecha = hora = alarm = estado = ''
+    fecha = hora = alarm = estado = categoria = ''
     for i in line:
-        if i not in ('_', '>', '[', ']'):
-            if is_date:
-                cad.append(i)
-            elif is_hs:
-                cad.append(i)
-            elif is_alarm:
-                cad.append(i)
-            elif is_estado:
-                cad.append(i)
+        if i not in ('_', '>', ':', '[', ']'):
+            cad.append(i)
         else:
-            if i == '_':
-                del cad[-1]
+            if i == '_'and is_date:
                 fecha = ''.join(cad)
                 cad = []
-            elif i == '>':
-                del cad[0]
-                del cad[-1]
+                is_date = False
+            elif i == '>' and is_hs:
                 hora = ''.join(cad)
                 cad = []
-            elif i == '[':
-                del cad[0]
-                del cad[-1]
+                is_hs = False
+                is_cat = True
+            elif i == ':' and is_cat:
+                categoria = ''.join(cad)
+                cad = []
+                is_cat = False
+            elif i == '[' and is_alarm:
                 alarm = ''.join(cad)
                 cad = []
+                is_alarm = False
             elif i == ']':
                 estado = ''.join(cad)
                 cad = []
+            else:
+                cad.append(i)
+    print(categoria)
+    if estado == '':
+        alarm = ''.join(cad)
 
-    return [fecha, hora, alarm, estado]
+    return [fecha, hora, categoria, alarm, estado]
 
 
 def open_xlsm(fd):
@@ -56,15 +58,15 @@ def open_xlsm(fd):
     wb = table.create_table()
     m = open(fd)
     while True:
-        k += 1
         line = m.readline()
         if line == '':
             break
-        if line[-1] == '\n':
+        if line[-1] == '\n'and line is not '\n':
             line = line[:-1]
-        print(line)
-        alarm = disarm(line)
-        table.load_table(wb, k, alarm)
+            print(line)
+            k += 1
+            alarm = disarm(line)
+            table.load_table(wb, k, alarm)
     m.close()
     wb.save('log.xlsx')
 
@@ -72,12 +74,6 @@ def open_xlsm(fd):
 def main():
     fd = 'log2.txt'
     open_xlsm(fd)
-
-# log = '2018-07-10 _ 23:07:05 > AL: VOLUMEN MINUTO MÁXIMO [Activada]'
-# alarm = disarm(log)
-# print(alarm)
-# ws = table.create_table()
-# table.load_table(ws, 2, alarm)
 
 
 if __name__ == '__main__':
