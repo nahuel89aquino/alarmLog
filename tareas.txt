@@ -1,0 +1,4 @@
+tareas por completar
+fecha: 10/11/18
+- dar formato a la tabla de exel generada
+- implementar apertura de archivos .txt desde la url

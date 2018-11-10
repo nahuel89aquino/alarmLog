@@ -46,7 +46,6 @@ def disarm(line):
                 cad = []
             else:
                 cad.append(i)
-    print(categoria)
     if estado == '':
         alarm = ''.join(cad)
 
