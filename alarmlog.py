@@ -52,7 +52,7 @@ def disarm(line):
     return [fecha, hora, categoria, alarm, estado]
 
 
-def open_xlsm(fd):
+def open_xlsx(fd):
     k = 1
     wb = table.create_table()
     m = open(fd)
@@ -72,7 +72,7 @@ def open_xlsm(fd):
 
 def main():
     fd = 'log2.txt'
-    open_xlsm(fd)
+    open_xlsx(fd)
 
 
 if __name__ == '__main__':

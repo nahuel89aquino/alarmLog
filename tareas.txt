@@ -2,3 +2,8 @@ tareas por completar
 fecha: 10/11/18
 - dar formato a la tabla de exel generada
 - implementar apertura de archivos .txt desde la url
+
+fecha: 10/11/18 19:26
+- se dieron formato a la tabla de exel
+    tarea:
+        - alternar colores entre filas pares e inpares
