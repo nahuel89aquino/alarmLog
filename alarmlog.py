@@ -66,12 +66,15 @@ def open_xlsx(fd):
             k += 1
             alarm = disarm(line)
             table.load_table(wb, k, alarm)
+        m.flush()
     m.close()
     wb.save('log.xlsx')
 
 
 def main():
-    fd = 'log2.txt'
+    #fd = 'log2.txt'
+    dir = input("Ingrese ruta de acceso al archivo: ")
+    fd = dir.replace('\\', '/')
     open_xlsx(fd)
 
 

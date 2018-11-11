@@ -6,4 +6,5 @@ fecha: 10/11/18
 fecha: 10/11/18 19:26
 - se dieron formato a la tabla de exel
     tarea:
-        - alternar colores entre filas pares e inpares
+        - alternar colores entre filas pares e inpares (OK)
+- apertura de archivo por medio de su ruta de acceso (ok)
