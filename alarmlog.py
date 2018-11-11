@@ -1,5 +1,7 @@
 import table
-
+import filechooser
+from tkinter import filedialog
+from tkinter import *
 
 class Fecha:
     def __init__(self, dia, hora, mes):
@@ -70,11 +72,27 @@ def open_xlsx(fd):
     m.close()
     wb.save('log.xlsx')
 
+def OpenFile():
+    name = filedialog.askopenfilename(initialdir="C:/Users/Usuario/Desktop",
+                           filetypes=(("Text File", "*.txt"), ("All Files", "*.*")),
+                           title="Choose a file."
+                           )
+    #print(name)
+    #Using try in case user types in unknown file or closes without choosing a file.
+    try:
+        return name
+        #with open(name, 'r') as UseFile:
+        #print(UseFile.read())
+
+    except:
+        print("No file exists")
 
 def main():
     #fd = 'log2.txt'
-    dir = input("Ingrese ruta de acceso al archivo: ")
-    fd = dir.replace('\\', '/')
+    # dir = input("Ingrese ruta de acceso al archivo: ")
+    # fd = dir.replace('\\', '/')
+    fd = OpenFile()
+    print(fd)
     open_xlsx(fd)
 
 
