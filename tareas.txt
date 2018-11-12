@@ -1,10 +1,16 @@
 tareas por completar
 fecha: 10/11/18
-- dar formato a la tabla de exel generada
-- implementar apertura de archivos .txt desde la url
+- dar formato a la tabla de exel generada (ok)
+- implementar apertura de archivos .txt desde la url(ok)
 
 fecha: 10/11/18 19:26
 - se dieron formato a la tabla de exel
     tarea:
         - alternar colores entre filas pares e inpares (OK)
 - apertura de archivo por medio de su ruta de acceso (ok)
+
+fecha: 12/11/18 02:35
+- ancho de columnas y centrado en tabla de exel establecido
+- tarea:
+    - determinar analisis de informacion a implementar en el archivo log.txt
+    - determinar forma de implementacion de interface grafica

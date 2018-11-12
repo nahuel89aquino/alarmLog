@@ -72,11 +72,11 @@ def open_xlsx(fd):
     m.close()
     wb.save('log.xlsx')
 
+
 def OpenFile():
     name = filedialog.askopenfilename(initialdir="C:/Users/Usuario/Desktop",
                            filetypes=(("Text File", "*.txt"), ("All Files", "*.*")),
-                           title="Choose a file."
-                           )
+                           title="Choose a file.")
     #print(name)
     #Using try in case user types in unknown file or closes without choosing a file.
     try:
@@ -87,8 +87,9 @@ def OpenFile():
     except:
         print("No file exists")
 
+
 def main():
-    #fd = 'log2.txt'
+    # fd = 'log2.txt'
     # dir = input("Ingrese ruta de acceso al archivo: ")
     # fd = dir.replace('\\', '/')
     fd = OpenFile()
