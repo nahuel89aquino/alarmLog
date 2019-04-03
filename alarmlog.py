@@ -1,7 +1,7 @@
 import table
-import filechooser
-from tkinter import filedialog
-from tkinter import *
+#import filechooser
+#from tkinter import filedialog
+#from tkinter import *
 
 class Fecha:
     def __init__(self, dia, hora, mes):
@@ -57,7 +57,8 @@ def disarm(line):
 def open_xlsx(fd):
     k = 1
     wb = table.create_table()
-    m = open(fd)
+    #m = open(fd)
+    m = fd
     while True:
         line = m.readline()
         if line == '':
@@ -69,33 +70,33 @@ def open_xlsx(fd):
             alarm = disarm(line)
             table.load_table(wb, k, alarm)
         m.flush()
-    m.close()
-    wb.save('log.xlsx')
+    #m.close()
+    wb.save('log4.xlsx')
 
 
-def OpenFile():
-    name = filedialog.askopenfilename(initialdir="C:/Users/Usuario/Desktop",
-                           filetypes=(("Text File", "*.txt"), ("All Files", "*.*")),
-                           title="Choose a file.")
-    #print(name)
-    #Using try in case user types in unknown file or closes without choosing a file.
-    try:
-        return name
-        #with open(name, 'r') as UseFile:
-        #print(UseFile.read())
+#def OpenFile():
+#    name = filedialog.askopenfilename(initialdir="C:/Users/Usuario/Desktop",
+#                           filetypes=(("Text File", "*.txt"), ("All Files", "*.*")),
+#                           title="Choose a file.")
+#    #print(name)
+#    #Using try in case user types in unknown file or closes without choosing a file.
+#    try:
+#        return name
+#        #with open(name, 'r') as UseFile:
+#        #print(UseFile.read())
+#
+#    except:
+#        print("No file exists")
 
-    except:
-        print("No file exists")
 
-
-def main():
+#def main():
     # fd = 'log2.txt'
     # dir = input("Ingrese ruta de acceso al archivo: ")
     # fd = dir.replace('\\', '/')
-    fd = OpenFile()
-    print(fd)
-    open_xlsx(fd)
+#    fd = OpenFile()
+#    print(fd)
+#    open_xlsx(fd)
 
 
-if __name__ == '__main__':
-    main()
+#if __name__ == '__main__':
+#    main()
