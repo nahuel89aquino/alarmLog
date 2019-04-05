@@ -1,4 +1,5 @@
 import table
+import os
 #import filechooser
 #from tkinter import filedialog
 #from tkinter import *
@@ -57,7 +58,6 @@ def disarm(line):
 def open_xlsx(fd):
     k = 1
     wb = table.create_table()
-    #m = open(fd)
     m = fd
     while True:
         line = m.readline()
@@ -70,33 +70,8 @@ def open_xlsx(fd):
             alarm = disarm(line)
             table.load_table(wb, k, alarm)
         m.flush()
-    #m.close()
+    os.chdir('C:/Users/Usuario/Desktop/AED/alarmLog/Nueva')
     wb.save('log4.xlsx')
 
 
-#def OpenFile():
-#    name = filedialog.askopenfilename(initialdir="C:/Users/Usuario/Desktop",
-#                           filetypes=(("Text File", "*.txt"), ("All Files", "*.*")),
-#                           title="Choose a file.")
-#    #print(name)
-#    #Using try in case user types in unknown file or closes without choosing a file.
-#    try:
-#        return name
-#        #with open(name, 'r') as UseFile:
-#        #print(UseFile.read())
-#
-#    except:
-#        print("No file exists")
 
-
-#def main():
-    # fd = 'log2.txt'
-    # dir = input("Ingrese ruta de acceso al archivo: ")
-    # fd = dir.replace('\\', '/')
-#    fd = OpenFile()
-#    print(fd)
-#    open_xlsx(fd)
-
-
-#if __name__ == '__main__':
-#    main()

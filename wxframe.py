@@ -4,7 +4,7 @@ import alarmlog
 
 
 class MainWindow(wx.Frame):
-    def __init__(self, filename='noname.txt'):
+    def __init__(self, filename='Generador de log.xlsx'):
         super(MainWindow, self).__init__(None, size=(600, 300))
         self.filename = filename
         self.dirname = '.'
@@ -30,8 +30,6 @@ class MainWindow(wx.Frame):
                 self.OnAbout),
              (wx.ID_OPEN, '&Open', 'Open a new file', self.OnOpen),
              (wx.ID_SAVE, '&Save', 'Save the current file', self.OnSave),
-             (wx.ID_SAVEAS, 'Save &As', 'Save the file under a different name',
-                self.OnSaveAs),
              (None, None, None, None),
              (wx.ID_EXIT, 'E&xit', 'Terminate the program', self.OnExit)]:
             if id == None:
@@ -47,7 +45,7 @@ class MainWindow(wx.Frame):
     def SetTitle(self):
         # MainWindow.SetTitle overrides wx.Frame.SetTitle, so we have to
         # call it using super:
-        super(MainWindow, self).SetTitle('Editor %s'%self.filename)
+        super(MainWindow, self).SetTitle('%s'%self.filename)
 
 
     # Helper methods:
@@ -85,6 +83,8 @@ class MainWindow(wx.Frame):
     def OnSave(self, event):
         textfile = open(os.path.join(self.dirname, self.filename), 'r')
         alarmlog.open_xlsx(textfile)
+        self.control.SetValue("\n\nProcesses successfully completed...\n")
+        #self.control.SetValue(self.dirname + self.filename)
         #textfile.write(self.control.GetValue())
         textfile.close()
 
@@ -101,10 +101,10 @@ class MainWindow(wx.Frame):
                     self.control.SetValue(textfile.read())
             textfile.close()
 
-    def OnSaveAs(self, event):
-        if self.askUserForFilename(defaultFile=self.filename, style=wx.ID_SAVE,
-                                   **self.defaultFileDialogOptions()):
-            self.OnSave(event)
+#    def OnSaveAs(self, event):
+#        if self.askUserForFilename(defaultFile=self.filename, style=wx.ID_SAVE,
+#                                   **self.defaultFileDialogOptions()):
+#           self.OnSave(event)
 
 
 app = wx.App()
