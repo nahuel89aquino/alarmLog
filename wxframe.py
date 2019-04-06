@@ -14,7 +14,10 @@ class MainWindow(wx.Frame):
     def CreateInteriorWindowComponents(self):
         ''' Create "interior" window components. In this case it is just a
             simple multiline text control. '''
-        self.control = wx.TextCtrl(self, style=wx.TE_MULTILINE)
+        self.browse = wx.DirPickerCtrl(self, style=wx.DIRP_USE_TEXTCTRL, pos= (280,10), path=self.dirname)
+        self.button = wx.Button(self,label= "save", pos=(490,10))
+        self.Bind(wx.EVT_BUTTON, self.OnSave, self.button)
+        self.control = wx.TextCtrl(self, style=wx.TE_MULTILINE | wx.TE_READONLY,pos=(0,50), size=(600,300))
 
     def CreateExteriorWindowComponents(self):
         ''' Create "exterior" window components, such as menu and status
@@ -29,7 +32,6 @@ class MainWindow(wx.Frame):
             [(wx.ID_ABOUT, '&About', 'Information about this program',
                 self.OnAbout),
              (wx.ID_OPEN, '&Open', 'Open a new file', self.OnOpen),
-             (wx.ID_SAVE, '&Save', 'Save the current file', self.OnSave),
              (None, None, None, None),
              (wx.ID_EXIT, 'E&xit', 'Terminate the program', self.OnExit)]:
             if id == None:
@@ -81,18 +83,16 @@ class MainWindow(wx.Frame):
         self.Close()  # Close the main window.
 
     def OnSave(self, event):
+        newdirname = self.browse.GetPath()
         textfile = open(os.path.join(self.dirname, self.filename), 'r')
-        alarmlog.open_xlsx(textfile)
+        alarmlog.open_xlsx(textfile, newdirname)
         self.control.SetValue("\n\nProcesses successfully completed...\n")
-        #self.control.SetValue(self.dirname + self.filename)
-        #textfile.write(self.control.GetValue())
         textfile.close()
 
     def OnOpen(self, event):
         if self.askUserForFilename(style=wx.ID_OPEN,
                                    **self.defaultFileDialogOptions()):
             textfile = open(os.path.join(self.dirname, self.filename), 'r')
-            #alarmlog.open_xlsx(textfile)
             while True:
                 line = textfile.readline()
                 if line == '':
@@ -100,11 +100,6 @@ class MainWindow(wx.Frame):
                 else:
                     self.control.SetValue(textfile.read())
             textfile.close()
-
-#    def OnSaveAs(self, event):
-#        if self.askUserForFilename(defaultFile=self.filename, style=wx.ID_SAVE,
-#                                   **self.defaultFileDialogOptions()):
-#           self.OnSave(event)
 
 
 app = wx.App()
