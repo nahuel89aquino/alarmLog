@@ -55,7 +55,7 @@ def disarm(line):
     return [fecha, hora, categoria, alarm, estado]
 
 
-def open_xlsx(fd):
+def open_xlsx(fd, newdir):
     k = 1
     wb = table.create_table()
     m = fd
@@ -70,7 +70,7 @@ def open_xlsx(fd):
             alarm = disarm(line)
             table.load_table(wb, k, alarm)
         m.flush()
-    os.chdir('C:/Users/Usuario/Desktop/AED/alarmLog/Nueva')
+    os.chdir(newdir)
     wb.save('log4.xlsx')
 
 
