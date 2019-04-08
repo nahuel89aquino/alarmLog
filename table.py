@@ -7,10 +7,10 @@ col = ['A', 'B', 'C', 'D', 'E']
 col_width = [12, 10, 12, 52, 15]
 
 
-def create_table():
+def create_table(name):
     wb = Workbook()
     ws = wb.active
-    ws.title = 'nro serie'
+    ws.title = name
     for i in range(len(campos)):
         ws.column_dimensions[col[i]].width = col_width[i]
         celda = col[i] + '1'

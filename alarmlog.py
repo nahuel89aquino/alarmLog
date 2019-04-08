@@ -55,9 +55,9 @@ def disarm(line):
     return [fecha, hora, categoria, alarm, estado]
 
 
-def open_xlsx(fd, newdir):
+def open_xlsx(fd, newdir,name):
     k = 1
-    wb = table.create_table()
+    wb = table.create_table(name)
     m = fd
     while True:
         line = m.readline()
@@ -71,7 +71,7 @@ def open_xlsx(fd, newdir):
             table.load_table(wb, k, alarm)
         m.flush()
     os.chdir(newdir)
-    wb.save('log4.xlsx')
+    wb.save(name+'.xlsx')
 
 
 

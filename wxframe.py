@@ -8,16 +8,31 @@ class MainWindow(wx.Frame):
         super(MainWindow, self).__init__(None, size=(600, 300))
         self.filename = filename
         self.dirname = '.'
+        self.SetBackgroundColour(wx.Colour(240,240,240))
+        self.SetIcon(wx.Icon('icono.png'))
         self.CreateInteriorWindowComponents()
         self.CreateExteriorWindowComponents()
 
     def CreateInteriorWindowComponents(self):
         ''' Create "interior" window components. In this case it is just a
             simple multiline text control. '''
-        self.browse = wx.DirPickerCtrl(self, style=wx.DIRP_USE_TEXTCTRL, pos= (280,10), path=self.dirname)
-        self.button = wx.Button(self,label= "save", pos=(490,10))
+        mainSizer = wx.BoxSizer(wx.VERTICAL)
+        hSizer = wx.BoxSizer(wx.HORIZONTAL)
+        vSizer = wx.BoxSizer(wx.HORIZONTAL)
+        self.browse = wx.DirPickerCtrl(self, style=wx.DIRP_USE_TEXTCTRL,size=(250, 25), path=self.dirname)
+        self.button = wx.Button(self, label="Convert", pos=(490,10), size=(80,25))
         self.Bind(wx.EVT_BUTTON, self.OnSave, self.button)
-        self.control = wx.TextCtrl(self, style=wx.TE_MULTILINE | wx.TE_READONLY,pos=(0,50), size=(600,300))
+        self.texto = wx.StaticText(self, label="Numero de serie")
+        self.editext = wx.TextCtrl(self,value='********', style= wx.TE_MULTILINE | wx.TE_NO_VSCROLL, size=(150, 25))
+        vSizer.Add(self.texto, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.ALL,2)
+        vSizer.Add(self.editext,0,wx.ALIGN_LEFT | wx.ALL,2)
+        vSizer.Add(self.browse, 0, wx.ALIGN_RIGHT | wx.ALL,2)
+        hSizer.Add(vSizer, 0, wx.EXPAND)
+        hSizer.Add(self.button, 0, wx.ALIGN_RIGHT | wx.ALL,2)
+        self.control = wx.TextCtrl(self, style=wx.TE_MULTILINE | wx.TE_READONLY, size=(600,300))
+        mainSizer.Add(hSizer, 0,wx.ALIGN_RIGHT)
+        mainSizer.Add(self.control, 1, wx.EXPAND)
+        self.SetSizerAndFit(mainSizer)
 
     def CreateExteriorWindowComponents(self):
         ''' Create "exterior" window components, such as menu and status
@@ -74,8 +89,7 @@ class MainWindow(wx.Frame):
     # Event handlers:
 
     def OnAbout(self, event):
-        dialog = wx.MessageDialog(self, 'A sample editor\n'
-            'in wxPython', 'About Sample Editor', wx.OK)
+        dialog = wx.MessageDialog(self, 'Este es un conversor de log.txt a archivos exel', 'Conversor', wx.OK)
         dialog.ShowModal()
         dialog.Destroy()
 
@@ -83,11 +97,17 @@ class MainWindow(wx.Frame):
         self.Close()  # Close the main window.
 
     def OnSave(self, event):
-        newdirname = self.browse.GetPath()
-        textfile = open(os.path.join(self.dirname, self.filename), 'r')
-        alarmlog.open_xlsx(textfile, newdirname)
-        self.control.SetValue("\n\nProcesses successfully completed...\n")
-        textfile.close()
+        if self.control.GetValue() is '':
+            dialog = wx.MessageDialog(self, 'No hay nigun documento abierto','Error', wx.OK)
+            dialog.ShowModal()
+            dialog.Destroy()
+        else:
+            newdirname = self.browse.GetPath()
+            name = self.editext.GetValue()
+            textfile = open(os.path.join(self.dirname, self.filename), 'r')
+            alarmlog.open_xlsx(textfile, newdirname,name)
+            self.control.SetValue("\nProcesses successfully completed...\n")
+            textfile.close()
 
     def OnOpen(self, event):
         if self.askUserForFilename(style=wx.ID_OPEN,
@@ -101,8 +121,13 @@ class MainWindow(wx.Frame):
                     self.control.SetValue(textfile.read())
             textfile.close()
 
+def main():
+    app = wx.App()
+    frame = MainWindow()
+    #color = wx.Colour(192, 192, 192)
+    #frame.SetBackgroundColour(color)
+    frame.Show()
+    app.MainLoop()
 
-app = wx.App()
-frame = MainWindow()
-frame.Show()
-app.MainLoop()
+if __name__ == '__main__':
+    main()
