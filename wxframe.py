@@ -20,10 +20,10 @@ class MainWindow(wx.Frame):
         hSizer = wx.BoxSizer(wx.HORIZONTAL)
         vSizer = wx.BoxSizer(wx.HORIZONTAL)
         self.browse = wx.DirPickerCtrl(self, style=wx.DIRP_USE_TEXTCTRL,size=(250, 25), path=self.dirname)
-        self.button = wx.Button(self, label="Convert", pos=(490,10), size=(80,25))
+        self.button = wx.Button(self, label="Convertir", pos=(490,10), size=(80,25))
         self.Bind(wx.EVT_BUTTON, self.OnSave, self.button)
         self.texto = wx.StaticText(self, label="Numero de serie")
-        self.editext = wx.TextCtrl(self,value='********', style= wx.TE_MULTILINE | wx.TE_NO_VSCROLL, size=(150, 25))
+        self.editext = wx.TextCtrl(self,value='*', style= wx.TE_MULTILINE | wx.TE_NO_VSCROLL, size=(150, 25))
         vSizer.Add(self.texto, 0, wx.ALIGN_CENTER_HORIZONTAL | wx.ALL,2)
         vSizer.Add(self.editext,0,wx.ALIGN_LEFT | wx.ALL,2)
         vSizer.Add(self.browse, 0, wx.ALIGN_RIGHT | wx.ALL,2)
@@ -44,11 +44,11 @@ class MainWindow(wx.Frame):
     def CreateMenu(self):
         fileMenu = wx.Menu()
         for id, label, helpText, handler in \
-            [(wx.ID_ABOUT, '&About', 'Information about this program',
+            [(wx.ID_ABOUT, '&Acerca de', 'Información sobre este programa',
                 self.OnAbout),
-             (wx.ID_OPEN, '&Open', 'Open a new file', self.OnOpen),
+             (wx.ID_OPEN, '&Abrir', 'Abrir un nuevo archivo de log de eventos', self.OnOpen),
              (None, None, None, None),
-             (wx.ID_EXIT, 'E&xit', 'Terminate the program', self.OnExit)]:
+             (wx.ID_EXIT, '&Salir', 'Salir del programa', self.OnExit)]:
             if id == None:
                 fileMenu.AppendSeparator()
             else:
@@ -56,7 +56,7 @@ class MainWindow(wx.Frame):
                 self.Bind(wx.EVT_MENU, handler, item)
 
         menuBar = wx.MenuBar()
-        menuBar.Append(fileMenu, '&File') # Add the fileMenu to the MenuBar
+        menuBar.Append(fileMenu, '&Archivo') # Add the fileMenu to the MenuBar
         self.SetMenuBar(menuBar)  # Add the menuBar to the Frame
 
     def SetTitle(self):
@@ -71,7 +71,7 @@ class MainWindow(wx.Frame):
         ''' Return a dictionary with file dialog options that can be
             used in both the save file dialog as well as in the open
             file dialog. '''
-        return dict(message='Choose a file', defaultDir=self.dirname,
+        return dict(message='Seleccionar archivo', defaultDir=self.dirname,
                     wildcard='*.*')
 
     def askUserForFilename(self, **dialogOptions):
@@ -97,17 +97,30 @@ class MainWindow(wx.Frame):
         self.Close()  # Close the main window.
 
     def OnSave(self, event):
+
         if self.control.GetValue() is '':
-            dialog = wx.MessageDialog(self, 'No hay nigun documento abierto','Error', wx.OK)
+            dialog = wx.MessageDialog(self, 'No hay ningun documento abierto','Error', wx.OK)
+            dialog.ShowModal()
+            dialog.Destroy()
+        elif self.editext.GetValue() is '*':
+            dialog = wx.MessageDialog(self, 'Debe ingresar el numero de serie del equipo al que pertenece'
+                                            ' el log de alarmas','Error', wx.OK)
             dialog.ShowModal()
             dialog.Destroy()
         else:
-            newdirname = self.browse.GetPath()
-            name = self.editext.GetValue()
-            textfile = open(os.path.join(self.dirname, self.filename), 'r')
-            alarmlog.open_xlsx(textfile, newdirname, name)
-            self.control.SetValue("\nProcesses successfully completed...\n")
-            textfile.close()
+            try:
+                newdirname = self.browse.GetPath()
+                name = self.editext.GetValue()
+                textfile = open(os.path.join(self.dirname, self.filename), 'r')
+                alarmlog.open_xlsx(textfile, newdirname, name)
+                self.control.SetValue("\nProcesses successfully completed...\n")
+                textfile.close()
+            except ValueError:
+                dialog = wx.MessageDialog(self, 'Debe ingresar el numero de serie del equipo al que pertenece'
+                                            ' el log de alarmas','Error', wx.OK)
+                dialog.ShowModal()
+                dialog.Destroy()
+
 
     def OnOpen(self, event):
         if self.askUserForFilename(style=wx.ID_OPEN,
