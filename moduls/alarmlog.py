@@ -1,8 +1,5 @@
-import table
+from moduls import table
 import os
-#import filechooser
-#from tkinter import filedialog
-#from tkinter import *
 
 class Fecha:
     def __init__(self, dia, hora, mes):

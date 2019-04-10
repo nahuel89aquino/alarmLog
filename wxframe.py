@@ -1,6 +1,6 @@
 import wx
 import os.path
-import alarmlog
+from moduls import alarmlog
 
 
 class MainWindow(wx.Frame):
@@ -9,7 +9,7 @@ class MainWindow(wx.Frame):
         self.filename = filename
         self.dirname = '.'
         self.SetBackgroundColour(wx.Colour(240,240,240))
-        self.SetIcon(wx.Icon('icono.png'))
+        self.SetIcon(wx.Icon('img\icon.ico'))
         self.CreateInteriorWindowComponents()
         self.CreateExteriorWindowComponents()
 
@@ -105,7 +105,7 @@ class MainWindow(wx.Frame):
             newdirname = self.browse.GetPath()
             name = self.editext.GetValue()
             textfile = open(os.path.join(self.dirname, self.filename), 'r')
-            alarmlog.open_xlsx(textfile, newdirname,name)
+            alarmlog.open_xlsx(textfile, newdirname, name)
             self.control.SetValue("\nProcesses successfully completed...\n")
             textfile.close()
 
