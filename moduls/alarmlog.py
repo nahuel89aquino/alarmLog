@@ -21,7 +21,7 @@ def disarm(line):
     cad = []
     fecha = hora = alarm = estado = categoria = ''
     for i in line:
-        if i not in ('_', '>', ':', '[', ']'):
+        if i not in ('_', '>', ':', '[', ']', '-'):
             cad.append(i)
         else:
             if i == '_'and is_date:
@@ -33,7 +33,7 @@ def disarm(line):
                 cad = []
                 is_hs = False
                 is_cat = True
-            elif i == ':' and is_cat:
+            elif (i == ':' or i == '-') and is_cat:
                 categoria = ''.join(cad)
                 cad = []
                 is_cat = False

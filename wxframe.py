@@ -1,5 +1,6 @@
 import wx
 import os.path
+import codecs
 from moduls import alarmlog
 
 
@@ -111,13 +112,13 @@ class MainWindow(wx.Frame):
             try:
                 newdirname = self.browse.GetPath()
                 name = self.editext.GetValue()
-                textfile = open(os.path.join(self.dirname, self.filename), 'r')
+                textfile = codecs.open(os.path.join(self.dirname, self.filename), 'r','utf-8')
                 alarmlog.open_xlsx(textfile, newdirname, name)
                 self.control.SetValue("\nProcesses successfully completed...\n")
                 textfile.close()
             except ValueError:
-                dialog = wx.MessageDialog(self, 'Debe ingresar el numero de serie del equipo al que pertenece'
-                                            ' el log de alarmas','Error', wx.OK)
+                dialog = wx.MessageDialog(self, 'El campo no puede estar vacio'
+                                                '\n Ingrese el numero de serie','Error', wx.OK)
                 dialog.ShowModal()
                 dialog.Destroy()
 
@@ -125,7 +126,7 @@ class MainWindow(wx.Frame):
     def OnOpen(self, event):
         if self.askUserForFilename(style=wx.ID_OPEN,
                                    **self.defaultFileDialogOptions()):
-            textfile = open(os.path.join(self.dirname, self.filename), 'r')
+            textfile = codecs.open(os.path.join(self.dirname, self.filename), 'r', 'utf-8')
             while True:
                 line = textfile.readline()
                 if line == '':
@@ -137,8 +138,6 @@ class MainWindow(wx.Frame):
 def main():
     app = wx.App()
     frame = MainWindow()
-    #color = wx.Colour(192, 192, 192)
-    #frame.SetBackgroundColour(color)
     frame.Show()
     app.MainLoop()
 
