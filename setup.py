@@ -27,7 +27,7 @@ if sys.platform == 'linux' or sys.platform == 'linux2':
 
 Conversor = Executable(
     # what to build
-    script="wxframe.py",
+    script="Convert.py",
     initScript=None,
     base=base,
     icon='img\icon.ico', #ruta del icono del programa
